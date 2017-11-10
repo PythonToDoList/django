@@ -40,8 +40,17 @@ Export environment variables that point to these databases. You can export the e
 ```
 (ENV) django $ export DATABASE_URL='postges://localhost:5432/django_todo'
 (ENV) django $ echo \export DATABASE_URL="'postges://localhost:5432/django_todo'" >> ENV/bin/activate
-(ENV) django $ export TEST_DB='postges://localhost:5432/django_todo'
+(ENV) django $ export TEST_DB='postges://localhost:5432/test_dj_todo'
 (ENV) django $ echo \export TEST_DB="'test_dj_todo'" >> ENV/bin/activate
+```
+
+For the settings, also export a `SECRET_KEY`. You can also set `ALLOWED_HOSTS` but it's not required for development.
+
+```
+(ENV) django $ export SECRET_KEY='some secret key that you create'
+(ENV) django $ echo \export SECRET_KEY="'mysecretkey'"
+(ENV) django $ export ALLOWED_HOSTS=[]
+(ENV) django $ echo \export ALLOWED_HOSTS=[]
 ```
 
 Navigate into the `django_todo` directory and apply the built-in migrations to your development database.
