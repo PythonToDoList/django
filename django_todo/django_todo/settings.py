@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tasks'
 ]
 
 MIDDLEWARE = [
@@ -74,9 +75,11 @@ WSGI_APPLICATION = 'django_todo.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url(os.environ.get('DATABASE_URL', ''))
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL', ''))
 }
-DATABASES['default']['TEST'] = os.environ.get('TEST_DB', 'test_todo')
+DATABASES['default']['TEST'] = {
+    'NAME': os.environ.get('TEST_DB', 'test_todo')
+}
 
 
 # Password validation

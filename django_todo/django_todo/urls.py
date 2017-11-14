@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django_todo.views import ListInfo
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^api/v1/', ListInfo.as_view(), name="info"),
+    url(r'^api/v1/accounts/login'),
+    url(r'^api/v1/accounts/logout'),
+    url(r'^api/v1/accounts/(?P<username>[\w]+)'),
+    url(r'^api/v1/accounts/(?P<username>[\w]+)/tasks'),
+    url(r'^api/v1/accounts/(?P<username>[\w]+)/tasks/(?P<id>[\d]+)'),
 ]
