@@ -13,16 +13,22 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
-from django_todo.views import ListInfo
+from django_todo.views import snippet_list
+from django.contrib.auth import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/v1/', ListInfo.as_view(), name="info"),
-    url(r'^api/v1/accounts/login'),
-    url(r'^api/v1/accounts/logout'),
-    url(r'^api/v1/accounts/(?P<username>[\w]+)'),
-    url(r'^api/v1/accounts/(?P<username>[\w]+)/tasks'),
-    url(r'^api/v1/accounts/(?P<username>[\w]+)/tasks/(?P<id>[\d]+)'),
+    url(r'^api/v1/$', snippet_list, name="info"),
+    url(
+        r'^api/v1/accounts/login',
+        views.LoginView.as_view(
+            template_name='rest_framework/login.html',
+        ),
+        name='login'
+    ),
+    # url(r'^api/v1/accounts/(?P<username>[\w]+)'),
+    # url(r'^api/v1/accounts/(?P<username>[\w]+)/tasks'),
+    # url(r'^api/v1/accounts/(?P<username>[\w]+)/tasks/(?P<id>[\d]+)'),
 ]

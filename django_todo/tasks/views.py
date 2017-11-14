@@ -19,4 +19,4 @@ class ServeTasks(APIView):
             'username': user.username,
             'tasks': Task.serializable.filter(user__username=username).as_dict()
         }
-        return Response(output)
+        return Response(data=output)
