@@ -38,9 +38,9 @@ Create Postgres databases for developing and testing this application.
 Export environment variables that point to these databases. You can export the environment variables at the command line, but you should really include that variable in the environment in your `ENV/bin/activate` script. The database url example given below is what works on my machine, but your mileage may vary depending on what it takes to access your local databases.
 
 ```
-(ENV) django $ export DATABASE_URL='postges://localhost:5432/django_todo'
-(ENV) django $ echo \export DATABASE_URL="'postges://localhost:5432/django_todo'" >> ENV/bin/activate
-(ENV) django $ export TEST_DB='postges://localhost:5432/test_dj_todo'
+(ENV) django $ export DATABASE_URL='postgres://localhost:5432/django_todo'
+(ENV) django $ echo \export DATABASE_URL="'postgres://localhost:5432/django_todo'" >> ENV/bin/activate
+(ENV) django $ export TEST_DB='postgres://localhost:5432/test_dj_todo'
 (ENV) django $ echo \export TEST_DB="'test_dj_todo'" >> ENV/bin/activate
 ```
 
