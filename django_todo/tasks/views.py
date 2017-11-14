@@ -9,7 +9,7 @@ from rest_framework import status
 from tasks.models import Task
 
 
-class ServeTasks(APIView):
+class AllTasks(APIView):
     """View for sending responses for get and post requests to the task list."""
 
     def get(self, request, username):
@@ -42,3 +42,19 @@ class ServeTasks(APIView):
             return NotFound('The profile does not exist')
         except KeyError:
             return JsonResponse({'error': 'Some fields are missing'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SingleTasks(APIView):
+    """Handle get, put, and delete operations for an individual task."""
+
+    def get(self, request, username, id):
+        """Return detail for an individual task."""
+        pass
+
+    def put(self, request, username, id):
+        """Update detail for an individual task."""
+        pass
+
+    def delete(self, request, username, id):
+        """Delete an individual task."""
+        pass

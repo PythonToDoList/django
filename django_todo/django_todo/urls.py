@@ -15,14 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django_todo.views import snippet_list, ProfileView
-from tasks.views import ServeTasks
+from django_todo.views import snippet_list, ProfileView, Registration
+from tasks.views import AllTasks
 from django.contrib.auth import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/$', snippet_list, name="info"),
-    url(r'^api/v1/accounts/$', ProfileView.as_view(), name="register"),
+    url(r'^api/v1/accounts/$', Registration.as_view(), name="register"),
     url(
         r'^api/v1/accounts/login/$',
         views.LoginView.as_view(
@@ -32,6 +32,6 @@ urlpatterns = [
     ),
     url(r'^api/v1/accounts/logout/$', views.LogoutView.as_view(), name='logout'),
     url(r'^api/v1/accounts/(?P<username>[\w]+)/$', ProfileView.as_view(), name='profile'),
-    url(r'^api/v1/accounts/(?P<username>[\w]+)/tasks', ServeTasks.as_view(), name='many_tasks'),
+    url(r'^api/v1/accounts/(?P<username>[\w]+)/tasks', AllTasks.as_view(), name='many_tasks'),
     # url(r'^api/v1/accounts/(?P<username>[\w]+)/tasks/(?P<id>[\d]+)'),
 ]

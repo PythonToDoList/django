@@ -29,14 +29,8 @@ def snippet_list(request):
     return JsonResponse(routes)
 
 
-class ProfileView(APIView):
-    def get(self, request, username, format=None):
-        """Retrieve and return data for given user."""
-        user = User.objects.get(username=username)
-        if not user:
-            return NotFound('The profile does not exist')
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
+class Registration(APIView):
+    """Create a new user."""
 
     def post(self, request, format=None):
         """Create new user."""
@@ -56,6 +50,16 @@ class ProfileView(APIView):
         except KeyError:
             return JsonResponse({'error': 'Some fields are missing'}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class ProfileView(APIView):
+    def get(self, request, username, format=None):
+        """Retrieve and return data for given user."""
+        user = User.objects.get(username=username)
+        if not user:
+            return NotFound('The profile does not exist')
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
     def put(self, request, username, format=None):
         """Update existing user."""
         user = User.objects.get(username=username)
@@ -72,7 +76,6 @@ class ProfileView(APIView):
                 'msg': 'Profile updated.',
                 'profile': serialized.data
             }, status=status.HTTP_202_ACCEPTED)
-        
 
     def delete(self, request, username, format=None):
         """Delete existing user."""
