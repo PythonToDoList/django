@@ -4,7 +4,10 @@ from django.contrib.auth.models import User
 
 
 class WithDict(models.Manager):
+    """Take the queryset and render as a list of dictionaries."""
+
     def as_dict(self):
+        """See above."""
         queryset = self.get_queryset()
         return [obj.to_dict() for obj in queryset]
 
@@ -14,6 +17,7 @@ DATE_FMT = '%d/%m/%Y %H:%M:%S'
 
 class Task(models.Model):
     """Model for a task in the ToDo list."""
+
     name = models.CharField(max_length=280)
     note = models.TextField(blank=True, null=True)
     creation_date = models.DateTimeField(auto_now_add=True)
@@ -24,6 +28,7 @@ class Task(models.Model):
     serializable = WithDict()
 
     def to_dict(self):
+        """Render each task as a dictionary."""
         return {
             'id': self.id,
             'name': self.name,

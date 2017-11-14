@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django_todo.views import snippet_list, ProfileView
+from tasks.views import ServeTasks
 from django.contrib.auth import views
 
 urlpatterns = [
@@ -31,6 +32,6 @@ urlpatterns = [
     ),
     url(r'^api/v1/accounts/logout/$', views.LogoutView.as_view(), name='logout'),
     url(r'^api/v1/accounts/(?P<username>[\w]+)/$', ProfileView.as_view(), name='profile'),
-    # url(r'^api/v1/accounts/(?P<username>[\w]+)/tasks'),
+    url(r'^api/v1/accounts/(?P<username>[\w]+)/tasks', ServeTasks.as_view(), name='many_tasks'),
     # url(r'^api/v1/accounts/(?P<username>[\w]+)/tasks/(?P<id>[\d]+)'),
 ]

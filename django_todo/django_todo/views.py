@@ -1,11 +1,11 @@
 """Project-wide views."""
+from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponseBadRequest
 from django_todo.serializers import UserSerializer
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import NotFound
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
 def snippet_list(request):
@@ -32,7 +32,9 @@ def snippet_list(request):
 class ProfileView(APIView):
     def get(self, request, username, format=None):
         """Retrieve and return data for given user."""
-        user = self.get_object(username)
+        user = User.objects.get(username=username)
+        if not user:
+            return NotFound('The profile does not exist')
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
@@ -54,13 +56,11 @@ class ProfileView(APIView):
         except KeyError:
             return JsonResponse({'error': 'Some fields are missing'}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get_object(self, username):
-        """Retrieve user or raise 404."""
-        return get_object_or_404(User, username=username)
-
     def put(self, request, username, format=None):
         """Update existing user."""
-        user = self.get_object(username)
+        user = User.objects.get(username=username)
+        if not user:
+            return NotFound('The profile does not exist')
         data = dict(request.POST)
         data['username'] = data.get('username', user.username)
         data['email'] = data.get('email', user.email)
@@ -77,7 +77,7 @@ class ProfileView(APIView):
     def delete(self, request, username, format=None):
         """Delete existing user."""
         try:
-            user = self.get_object(username)
+            user = User.objects.get(username=username)
             user.delete()
         except:
             pass
