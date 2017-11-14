@@ -6,7 +6,7 @@ from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from tasks.models import Task
+from tasks.models import Task, DATE_FMT
 
 
 class AllTasks(APIView):
@@ -32,7 +32,7 @@ class AllTasks(APIView):
             new_task = Task(
                 name=request.POST['name'],
                 note=request.POST['note'],
-                due_date=datetime.strptime(due_date, '%d/%m/%Y %H:%M:%S') if due_date else None,
+                due_date=datetime.strptime(due_date, DATE_FMT) if due_date else None,
                 completed=request.POST['completed'],
                 user=user,
             )
@@ -49,12 +49,47 @@ class SingleTasks(APIView):
 
     def get(self, request, username, id):
         """Return detail for an individual task."""
-        pass
+        try:
+            user = User.objects.get(username=username)
+            return JsonResponse({
+                'username': user.username,
+                'task': user.tasks.get(id=id)
+            })
+        except (User.DoesNotExist, Task.DoesNotExist):
+            return JsonResponse({
+                'username': username,
+                'task': None
+            }, status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, username, id):
         """Update detail for an individual task."""
-        pass
+        try:
+            user = User.objects.get(username=username)
+            task = user.tasks.get(id=id)
+            task.name = request.POST.get('name', task.name)
+            task.note = request.POST.get('note', task.note)
+            task.name = request.POST.get('name', task.name)
+            if 'due_date' in request.POST:
+                due_date = request.POST['due_date']
+                task.due_date = datetime.strptime(due_date, DATE_FMT)
+            task.save()
+            return JsonResponse({'username': user.username, 'task': task.to_dict()})
+
+        except (User.DoesNotExist, Task.DoesNotExist):
+            return JsonResponse({
+                'username': username,
+                'task': None
+            }, status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, username, id):
         """Delete an individual task."""
-        pass
+        try:
+            user = User.objects.get(username=username)
+            task = user.tasks.get(id=id)
+            task.delete()
+        except (User.DoesNotExist, Task.DoesNotExist):
+            pass
+        return JsonResponse({
+            'username': username,
+            'msg': 'Deleted'
+        })
