@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+cd django_todo
+python manage.py migrate
+gunicorn django_todo.wsgi --log-file -

@@ -78,3 +78,17 @@ Configure the [Heroku Postgres add-on](https://elements.heroku.com/addons/heroku
 ```
 django $ heroku addons:create heroku-postgresql:hobby-dev
 ```
+
+Set your the following environment variables on Heroku:
+
+- `SECRET_KEY`: this can be any string
+- `ALLOWED_HOSTS`: this should just be an empty list as a string '[]'
+- `DEBUG`: `False`
+
+```
+pyramid $ heroku config:set SECRET_KEY='some secret string'
+pyramid $ heroku config:set DEBUG='False'
+pyramid $ heroku config:set ALLOWED_HOSTS='[]'
+```
+
+Push this repository to your Heroku repository and `heroku open` to view the site.
