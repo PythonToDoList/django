@@ -31,6 +31,14 @@ def snippet_list(request):
 
 class Registration(APIView):
     """Create a new user."""
+    def get(self, request, format=None):
+        return JsonResponse({'error': 'not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def put(self, request, format=None):
+        return JsonResponse({'error': 'not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+ 
+    def delete(self, request, format=None):
+        return JsonResponse({'error': 'not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def post(self, request, format=None):
         """Create new user."""
@@ -58,7 +66,7 @@ class ProfileView(APIView):
         if not user:
             return NotFound('The profile does not exist')
         serializer = UserSerializer(user)
-        return Response(serializer.data)
+        return JsonResponse(serializer.data)
 
     def put(self, request, username, format=None):
         """Update existing user."""
@@ -85,3 +93,7 @@ class ProfileView(APIView):
         except:
             pass
         return JsonResponse({}, status=status.HTTP_204_NO_CONTENT)
+
+    def post(self, request, username, format=None):
+        """."""
+        return JsonResponse({'error': 'not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

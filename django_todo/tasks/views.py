@@ -16,13 +16,14 @@ class AllTasks(APIView):
         """Return a list of all tasks."""
         try:
             user = User.objects.get(username=username)
+            tasks = Task.objects.filter(user__username=username).all()
             output = {
                 'username': user.username,
-                'tasks': Task.serializable.filter(user__username=username).as_dict()
+                'tasks': [task.to_dict() for task in tasks]
             }
-            return Response(data=output)
+            return JsonResponse(data=output)
         except User.DoesNotExist:
-            return NotFound('The profile does not exist')
+            return JsonResponse({'error': 'The profile does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request, username):
         """Add a new task to the task list."""
@@ -39,7 +40,7 @@ class AllTasks(APIView):
             new_task.save()
             return JsonResponse({'msg': 'posted'}, status=status.HTTP_201_CREATED)
         except User.DoesNotExist:
-            return NotFound('The profile does not exist')
+            return JsonResponse({'error': 'The profile does not exist'}, status=status.HTTP_404_NOT_FOUND)
         except KeyError:
             return JsonResponse({'error': 'Some fields are missing'}, status=status.HTTP_400_BAD_REQUEST)
 
